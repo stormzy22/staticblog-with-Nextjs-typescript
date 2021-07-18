@@ -1,7 +1,7 @@
 import fs from "fs";
 import { GetStaticProps } from "next";
 import path from "path";
-import { ParsedUrlQuery } from "querystring";
+
 import React from "react";
 
 const postPage = (): JSX.Element => {
