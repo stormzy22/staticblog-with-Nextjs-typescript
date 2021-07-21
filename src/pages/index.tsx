@@ -5,7 +5,6 @@ import Head from "next/head";
 import path from "path";
 import React from "react";
 import { Post } from "../components/Post";
-import { sortByDate } from "../utils/index";
 
 export interface Posts {
   posts: [];
@@ -67,7 +66,12 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
-      posts: posts.sort(sortByDate),
+      posts: posts.sort((a, b) => {
+        return (
+          new Date(b.frontmatter.date).valueOf() -
+          new Date(a.frontmatter.date).valueOf()
+        );
+      }),
     },
   };
 };
