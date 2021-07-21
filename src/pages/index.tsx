@@ -1,23 +1,14 @@
-import { GetStaticProps } from "next";
-import React from "react";
 import fs from "fs";
-import path from "path";
 import matter from "gray-matter";
+import { GetStaticProps } from "next";
 import Head from "next/head";
+import path from "path";
+import React from "react";
 import { Post } from "../components/Post";
+import { sortByDate } from "../utils/index";
 
 export interface Posts {
-  posts: [
-    {
-      frontmatter: {
-        cover_image: string;
-        date: string;
-        excerpt: string;
-        title: string;
-      };
-      slug: string;
-    }
-  ];
+  posts: [];
 }
 
 export default function Home({ posts }: Posts): JSX.Element {
@@ -30,9 +21,22 @@ export default function Home({ posts }: Posts): JSX.Element {
       </Head>
 
       <div className="posts">
-        {posts.map((post, index) => (
-          <Post post={post} key={index} />
-        ))}
+        {posts?.map(
+          (
+            post: {
+              frontmatter: {
+                cover_image: string;
+                date: string;
+                excerpt: string;
+                title: string;
+              };
+              slug: string;
+            },
+            index: React.Key | null | undefined
+          ) => (
+            <Post post={post} key={index} />
+          )
+        )}
       </div>
     </div>
   );
@@ -63,7 +67,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
-      posts,
+      posts: posts.sort(sortByDate),
     },
   };
 };
